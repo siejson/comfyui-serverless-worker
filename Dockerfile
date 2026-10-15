@@ -10,7 +10,8 @@ ARG DEGRID_COMMIT=8082f8b04e0b4a79220e493d5647a0c32e1ff855
 ARG WORKER_COMFYUI_REF=5.11.0
 ENV PY=/opt/venv/bin/python PATH=/opt/venv/bin:$PATH PYTHONUNBUFFERED=1 PIP_NO_INPUT=1
 
-RUN apt-get update && apt-get install -y --no-install-recommends git libgl1 libglib2.0-0 libgoogle-perftools4 \
+# gcc + libc headers: Triton (int8 text encoder path) compiles a small C helper on first use.
+RUN apt-get update && apt-get install -y --no-install-recommends git gcc libc6-dev libgl1 libglib2.0-0 libgoogle-perftools4 \
     && rm -rf /var/lib/apt/lists/* \
     && pip install --no-cache-dir uv && uv venv /opt/venv
 
